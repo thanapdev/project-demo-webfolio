@@ -8,6 +8,7 @@ body {
     transition: background 0.7s cubic-bezier(.4,2,.6,1), color 0.7s cubic-bezier(.4,2,.6,1);
     background-size: 200% 100%;
     background-position: left center;
+    scroll-behavior: smooth;
 }
 body.light-mode {
     background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
@@ -59,12 +60,14 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2vw;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 10;
-    background: transparent;
+    background: rgba(14,33,72,0.95);
+    box-shadow: 0 2px 16px #0e214820;
+    transition: background 0.3s;
 }
 .logo {
     font-size: 2rem;
@@ -128,7 +131,17 @@ nav ul li a {
     position: relative;
     transition: color 0.4s cubic-bezier(.4,2,.6,1), background 0.4s cubic-bezier(.4,2,.6,1);
     overflow: hidden;
+    padding: 0.3em 1em;
+    border-radius: 0.7em;
 }
+/* nav ul li a:hover {
+    color: #0E2148;
+    background: #fff;
+}
+nav ul li a:active {
+    color: #fff;
+    background: #483AA0;
+} */
 nav ul li a::after {
     content: '';
     display: block;
@@ -137,26 +150,27 @@ nav ul li a::after {
     bottom: 0;
     width: 0;
     height: 3px;
-    background: linear-gradient(90deg, #f6d365 0%, #fda085 100%);
+    background: linear-gradient(90deg, #fff 0%, #BBFBFF 100%);
     border-radius: 2px;
     transition: width 0.3s cubic-bezier(.4,2,.6,1), left 0.3s cubic-bezier(.4,2,.6,1);
 }
-nav ul li a:hover {
-    color: #fda085;
-}
+/* nav ul li a:hover {
+    color: #483AA0;
+} */
 nav ul li a:hover::after {
     width: 100%;
     left: 0;
 }
 .hero {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
     position: relative;
     overflow: hidden;
     padding: 0;
+    padding-top: 100px;
 }
 .hero-content {
     margin-top: 8rem;
@@ -271,9 +285,105 @@ nav ul li a:hover::after {
         transform: none;
     }
 }
+/* Section Styles */
+.section {
+    padding: 5rem 0 4rem 0;
+    background: transparent;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.about-section h2,
+.projects-section h2,
+.contact-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    color: #E3D095;
+    letter-spacing: 1px;
+}
+.about-section p {
+    font-size: 1.2rem;
+    color: #fff;
+    line-height: 1.7;
+}
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.project-card {
+    background: #1a2250cc;
+    border-radius: 1em;
+    padding: 2rem 1.5rem;
+    color: #fff;
+    box-shadow: 0 4px 24px #0e214820;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.project-card h3 {
+    color: #E3D095;
+    margin-bottom: 0.7rem;
+}
+.project-card a {
+    color: #E3D095;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.project-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 32px #483aa080;
+}
+.contact-section .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.contact-section input,
+.contact-section textarea {
+    padding: 0.8em 1em;
+    border-radius: 0.5em;
+    border: none;
+    font-size: 1rem;
+    background: #23284d;
+    color: #fff;
+    resize: none;
+}
+.contact-section button[type="submit"] {
+    background: #E3D095;
+    color: #0E2148;
+    font-weight: bold;
+    border: none;
+    border-radius: 2em;
+    padding: 0.7em 2em;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.contact-section button[type="submit"]:hover {
+    background: #7965C1;
+    color: #fff;
+}
+.contact-links {
+    color: #E3D095;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+}
+.contact-links a {
+    color: #E3D095;
+    text-decoration: underline;
+    margin: 0 0.3em;
+}
 /* Responsive */
 @media (max-width: 900px) {
     nav {
+        position: fixed;
         padding: 1.2rem 2vw;
     }
     .nav-toggle-label {
@@ -301,6 +411,14 @@ nav ul li a:hover::after {
         opacity: 1;
         pointer-events: auto;
         transform: translateY(0);
+    }
+    .section {
+        padding: 3.5rem 0 2.5rem 0;
+        min-height: 80vh;
+        padding-top: 80px;
+    }
+    .hero {
+        padding-top: 80px;
     }
 }
 @media (max-width: 600px) {
