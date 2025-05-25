@@ -1,50 +1,23 @@
 /* styles.css */
+html {
+  scroll-behavior: smooth;
+}
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(120deg, #0E2148 50%, #483AA0 20%, #7965C1 15%, #E3D095 15%);
+    background: linear-gradient(120deg, #0E2148 50%, #483AA0 25%, #7965C1 25%);
     min-height: 100vh;
     color: #fff;
     transition: background 0.7s cubic-bezier(.4,2,.6,1), color 0.7s cubic-bezier(.4,2,.6,1);
     background-size: 200% 100%;
     background-position: left center;
-    scroll-behavior: smooth;
-}
-body.light-mode {
-    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-    color: #222;
-    background-size: 200% 100%;
-    background-position: left center;
-}
-body.animated-bg {
-    transition: background-position 0.9s cubic-bezier(.4,2,.6,1), background 0.7s cubic-bezier(.4,2,.6,1), color 0.7s cubic-bezier(.4,2,.6,1);
-    background-position: right center;
-}
-body.light-mode.animated-bg {
-    background-position: right center;
-}
-body::before,
-body.animated-bg::before,
-body.light-mode::before,
-body.light-mode.animated-bg::before {
-    content: none;
-}
-@keyframes wave-sweep {
-    0% {
-        background-position: left center;
-        opacity: 1;
-    }
-    100% {
-        background-position: right center;
-        opacity: 1;
-    }
 }
 /* Navbar and other elements use color variables for easy switching */
 :root {
     --primary-bg: #0E2148;
     --primary-fg: #fff;
     --accent: #E3D095;
-    --gradient: linear-gradient(90deg, #0E2148 50%, #483AA0 20%, #7965C1 15%, #E3D095 15%);
+    --gradient: linear-gradient(90deg, #0E2148 50%, #483AA0 25%, #7965C1 25%);
 }
 body.light-mode {
     --primary-bg: #f6d365;
@@ -379,6 +352,29 @@ nav ul li a:hover::after {
     color: #E3D095;
     text-decoration: underline;
     margin: 0 0.3em;
+}
+/* Back to Top Button */
+#back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 32px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: #2196f3;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+#back-to-top.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 /* Responsive */
 @media (max-width: 900px) {
