@@ -5,25 +5,92 @@ html {
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(120deg, #0E2148 50%, #483AA0 25%, #7965C1 25%);
-    min-height: 100vh;
-    color: #fff;
-    transition: background 0.7s cubic-bezier(.4,2,.6,1), color 0.7s cubic-bezier(.4,2,.6,1);
+    --angle: 120deg;
+    --color1: #0E2148;
+    --color2: #483AA0;
+    --color3: #7965C1;
+    background: linear-gradient(var(--angle), var(--color1) 50%, var(--color2) 25%, var(--color3) 25%);
+    color: var(--primary-fg, #fff);
+    transition: color 0.7s cubic-bezier(.4,2,.6,1);
     background-size: 200% 100%;
     background-position: left center;
 }
 /* Navbar and other elements use color variables for easy switching */
 :root {
-    --primary-bg: #0E2148;
-    --primary-fg: #fff;
-    --accent: #E3D095;
-    --gradient: linear-gradient(90deg, #0E2148 50%, #483AA0 25%, #7965C1 25%);
+  --primary-bg: #0E2148;
+  --primary-fg: #fff;
+  --accent: #E3D095;
+  --gradient: linear-gradient(120deg, #0E2148 50%, #483AA0 25%, #7965C1 25%);
 }
+
+body {
+  color: var(--primary-fg);
+  transition: color 0.7s cubic-bezier(.4,2,.6,1);
+  /* ไม่ต้อง transition background เพราะจะใช้ animation */
+}
+
+body.theme-animating {
+  animation: bg-rotate 0.7s cubic-bezier(.4,2,.6,1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes bg-rotate {
+  0% {
+    background: var(--gradient);
+    /* เริ่มต้นที่ 120deg */
+  }
+  100% {
+    background: linear-gradient(480deg, #0E2148 50%, #483AA0 25%, #7965C1 25%);
+    /* หมุน gradient ไปอีก 360deg */
+  }
+}
+
 body.light-mode {
-    --primary-bg: #f6d365;
-    --primary-fg: #222;
-    --accent: #fda085;
-    --gradient: linear-gradient(90deg, #f6d365 0%, #fda085 100%);
+  --color1: #f6d365;
+  --color2: #fda085;
+  --color3: #fffbe6;
+  color: #222;
+}
+
+body.light-mode.theme-animating {
+  animation: bg-rotate-light 0.7s cubic-bezier(.4,2,.6,1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes bg-rotate-light {
+  0% {
+    background: var(--gradient);
+  }
+  100% {
+    background: linear-gradient(480deg, #f6d365 0%, #fda085 100%);
+  }
+}
+
+.toggle-theme-btn {
+  margin-left: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--primary-fg);
+  transition: color 0.7s cubic-bezier(.4,2,.6,1);
+  outline: none;
+}
+.toggle-theme-btn.rotating {
+  animation: rotate-theme-btn 0.6s cubic-bezier(.4,2,.6,1);
+}
+@keyframes rotate-theme-btn {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+  background: transparent;
+  gap: 1.5rem; /* เพิ่มช่องว่างระหว่างโลโก้ ปุ่ม และเมนู */
 }
 nav {
     width: 100%;
@@ -32,7 +99,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2vw;
+    padding: 1.5rem 12vw;
     position: fixed;
     top: 0;
     left: 0;
@@ -43,10 +110,11 @@ nav {
     transition: background 0.3s;
 }
 .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff;
-    letter-spacing: 2px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
 }
 .nav-toggle {
     display: none;
@@ -83,12 +151,12 @@ nav {
     top: 10px;
 }
 .nav-menu {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-    align-items: center;
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
 }
 nav ul {
     list-style: none;
@@ -366,15 +434,63 @@ nav ul li a:hover::after {
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 }
-#back-to-top.show {
-  opacity: 1;
-  pointer-events: auto;
+
+.toggle-theme-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 88px; /* อยู่เหนือปุ่ม back-to-top */
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #222;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+body.light-mode .toggle-theme-btn {
+  background: #222;
+  color: #fff;
+}
+body,
+body.light-mode {
+  transition: color 0.7s cubic-bezier(.4,2,.6,1);
+  /* ไม่ต้อง transition background เพราะจะใช้ animation แทน */
+}
+
+body.theme-animating {
+  animation: bg-rotate 0.7s cubic-bezier(.4,2,.6,1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes bg-rotate {
+  0% {
+    background: var(--gradient);
+    /* เริ่มต้นที่ 120deg */
+  }
+  100% {
+    background: linear-gradient(480deg, #0E2148 50%, #483AA0 25%, #7965C1 25%);
+    /* หมุน gradient ไปอีก 360deg */
+  }
+}
+
+body.light-mode.theme-animating {
+  animation: bg-rotate-light 0.7s cubic-bezier(.4,2,.6,1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes bg-rotate-light {
+  0% {
+    background: var(--gradient);
+  }
+  100% {
+    background: linear-gradient(480deg, #f6d365 0%, #fda085 100%);
+  }
 }
 /* Responsive */
 @media (max-width: 900px) {

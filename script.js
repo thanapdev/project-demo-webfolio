@@ -46,26 +46,10 @@ window.addEventListener('DOMContentLoaded', () => {
         canvas.height = height;
     });
 
-    // Theme toggle
-    const toggleBtn = document.getElementById('toggle-theme');
-    const body = document.body;
-    let dark = !body.classList.contains('light-mode');
-    toggleBtn.addEventListener('click', () => {
-        dark = !dark;
-        // Add animation class for wave effect
-        body.classList.add('animated-bg');
-        setTimeout(() => {
-            body.classList.toggle('light-mode', !dark);
-        }, 10);
-        setTimeout(() => {
-            body.classList.remove('animated-bg');
-        }, 1200);
-        toggleBtn.textContent = dark ? '🌙mode' : '☀️mode';
-    });
     // Animate nav on scroll
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
+        if (window.scrollY > 200) {
             nav.style.background = 'rgba(34,34,34,0.8)';
             nav.style.backdropFilter = 'blur(4px)';
         } else {
@@ -99,4 +83,92 @@ window.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // Theme toggle
+    const themeBtn = document.getElementById('toggle-theme');
+    const body = document.body;
+
+    function setTheme(isLight) {
+        if (isLight) {
+            body.classList.add('light-mode');
+            themeBtn.textContent = '🌞';
+        } else {
+            body.classList.remove('light-mode');
+            themeBtn.textContent = '🌙';
+        }
+    }
+
+    // เริ่มต้นดูว่าต้องใช้ธีมไหน (เช็ค localStorage)
+    let isLight = localStorage.getItem('theme') === 'light';
+    setTheme(isLight);
+
+    function animateAngle(from, to, duration = 700) {
+        const start = performance.now();
+        function frame(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const angle = from + (to - from) * progress;
+            document.body.style.setProperty('--angle', angle + 'deg');
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    function animateTheme(from, to, duration = 700) {
+        const start = performance.now();
+        function frame(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            // องศา
+            const angle = from.angle + (to.angle - from.angle) * progress;
+            document.body.style.setProperty('--angle', angle + 'deg');
+            // สี
+            document.body.style.setProperty('--color1', lerpColor(from.color1, to.color1, progress));
+            document.body.style.setProperty('--color2', lerpColor(from.color2, to.color2, progress));
+            document.body.style.setProperty('--color3', lerpColor(from.color3, to.color3, progress));
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        }
+        requestAnimationFrame(frame);
+    }
+
+    themeBtn.addEventListener('click', () => {
+        isLight = !isLight;
+        // อ่านค่าปัจจุบัน
+        const currentAngle = parseFloat(getComputedStyle(document.body).getPropertyValue('--angle')) || 120;
+        const from = {
+            angle: currentAngle,
+            color1: hexToRgb(getComputedStyle(document.body).getPropertyValue('--color1').trim()),
+            color2: hexToRgb(getComputedStyle(document.body).getPropertyValue('--color2').trim()),
+            color3: hexToRgb(getComputedStyle(document.body).getPropertyValue('--color3').trim())
+        };
+        // กำหนดเป้าหมาย
+        const to = isLight
+            ? { angle: currentAngle + 360, color1: hexToRgb('#f6d365'), color2: hexToRgb('#fda085'), color3: hexToRgb('#fffbe6') }
+            : { angle: currentAngle + 360, color1: hexToRgb('#0E2148'), color2: hexToRgb('#483AA0'), color3: hexToRgb('#7965C1') };
+        animateTheme(from, to, 1500); // เปลี่ยน 700 เป็น 1500 (1.5 วินาที)
+        setTheme(isLight);
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+
+    function hexToRgb(hex) {
+        hex = hex.replace(/^#/, '');
+        if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
+        const num = parseInt(hex, 16);
+        return [num >> 16, (num >> 8) & 255, num & 255];
+    }
+    function rgbToHex([r, g, b]) {
+        return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+    function lerp(a, b, t) {
+        return a + (b - a) * t;
+    }
+    function lerpColor(a, b, t) {
+        return rgbToHex([
+            Math.round(lerp(a[0], b[0], t)),
+            Math.round(lerp(a[1], b[1], t)),
+            Math.round(lerp(a[2], b[2], t))
+        ]);
+    }
 });

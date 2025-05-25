@@ -7,20 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <nav>
+        <div class="logo">
+            Thanapong-Portfolio
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://github.com/thanapdev" target="_blank" class="github-link">GitHub</a></li>
+        </ul>
+    </nav>
+    <button id="back-to-top" title="Back to Top">↑</button>
+    <button id="toggle-theme" class="toggle-theme-btn" title="Toggle Light/Dark Mode">🌙</button>
     <div class="hero">
-        <nav>
-            <div class="logo">Thanapong-Portfolio</div>
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" />
-            <label for="nav-toggle" class="nav-toggle-label">
-                <span></span>
-            </label>
-            <ul class="nav-menu">
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="https://github.com/thanapdev" target="_blank" class="github-link">GitHub</a></li>
-            </ul>
-        </nav>
         <div class="hero-content">
             <img src="https://avatars.githubusercontent.com/u/10296444?v=4" alt="Thanapong Yamkamol" class="avatar fade-in">
             <h1 class="fade-in">Hi, I'm <span>Thanapong Yamkamol</span></h1>
@@ -71,7 +71,6 @@
             </div>
         </div>
     </section>
-    <button id="back-to-top" title="Back to Top">↑</button>
     <canvas id="bg-canvas"></canvas>
     <script src="script.js"></script>
 </body>
