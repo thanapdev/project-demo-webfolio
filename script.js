@@ -37,6 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(animate);
     }
 
+    
     animate();
 
     window.addEventListener('resize', () => {
