@@ -153,6 +153,109 @@ window.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
+    // --- Section fade-in on scroll ---
+    const sections = document.querySelectorAll('.section');
+    const observer = new window.IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+    sections.forEach(section => observer.observe(section));
+
+    // --- Dynamic GitHub Projects ---
+    const projectsGrid = document.querySelector('.projects-grid');
+    if (projectsGrid) {
+        fetch('https://api.github.com/users/thanapdev/repos?sort=updated&per_page=6')
+            .then(res => res.json())
+            .then(repos => {
+                projectsGrid.innerHTML = '';
+                repos.forEach(repo => {
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    card.innerHTML = `
+                        <h3>${repo.name}</h3>
+                        <p>${repo.description ? repo.description : ''}</p>
+                        <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+                    `;
+                    projectsGrid.appendChild(card);
+                });
+            })
+            .catch(() => {
+                // fallback: do nothing, keep static content
+            });
+    }
+
+    // --- Dynamic GitHub Skills ---
+    const skillsGrid = document.querySelector('.skills-grid');
+    if (skillsGrid) {
+        fetch('https://api.github.com/users/thanapdev/repos?per_page=100')
+            .then(res => res.json())
+            .then(repos => {
+                // Collect languages from all repos
+                const langSet = new Set();
+                repos.forEach(repo => {
+                    if (repo.language) langSet.add(repo.language);
+                });
+                // Map language to icon and label
+                const langMap = {
+                    'HTML': {icon: 'html5', label: 'HTML5'},
+                    'CSS': {icon: 'css3', label: 'CSS3'},
+                    'JavaScript': {icon: 'javascript', label: 'JavaScript'},
+                    'TypeScript': {icon: 'typescript', label: 'TypeScript'},
+                    'Python': {icon: 'python', label: 'Python'},
+                    'Java': {icon: 'java', label: 'Java'},
+                    'C++': {icon: 'cplusplus', label: 'C++'},
+                    'C#': {icon: 'csharp', label: 'C#'},
+                    'Go': {icon: 'go', label: 'Go'},
+                    'PHP': {icon: 'php', label: 'PHP'},
+                    'Ruby': {icon: 'ruby', label: 'Ruby'},
+                    'Shell': {icon: 'bash', label: 'Shell'},
+                    'Vue': {icon: 'vuejs', label: 'Vue.js'},
+                    'SCSS': {icon: 'sass', label: 'SCSS'},
+                    'Jupyter Notebook': {icon: 'jupyter', label: 'Jupyter'},
+                    'Dockerfile': {icon: 'docker', label: 'Docker'},
+                    'Kotlin': {icon: 'kotlin', label: 'Kotlin'},
+                    'Swift': {icon: 'swift', label: 'Swift'},
+                    'Objective-C': {icon: 'objectivec', label: 'Objective-C'},
+                    'Rust': {icon: 'rust', label: 'Rust'},
+                    'Dart': {icon: 'dart', label: 'Dart'}
+                };
+                // Always show these core skills
+                const coreSkills = [
+                    {icon: 'html5', label: 'HTML5'},
+                    {icon: 'css3', label: 'CSS3'},
+                    {icon: 'javascript', label: 'JavaScript'},
+                    {icon: 'react', label: 'React'},
+                    {icon: 'nodejs', label: 'Node.js'},
+                    {icon: 'express', label: 'Express'},
+                    {icon: 'mongodb', label: 'MongoDB'},
+                    {icon: 'git', label: 'Git'}
+                ];
+                // Add detected languages (avoid duplicate core skills)
+                const skills = [...coreSkills];
+                langSet.forEach(lang => {
+                    const found = coreSkills.find(s => s.label === lang || s.label === langMap[lang]?.label);
+                    if (!found && langMap[lang]) {
+                        skills.push(langMap[lang]);
+                    }
+                });
+                // Render
+                skillsGrid.innerHTML = '';
+                skills.forEach(skill => {
+                    const card = document.createElement('div');
+                    card.className = 'skill-card';
+                    card.innerHTML = `
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${skill.icon}/${skill.icon}-original.svg" alt="${skill.label}" title="${skill.label}">
+                        <span>${skill.label}</span>
+                    `;
+                    skillsGrid.appendChild(card);
+                });
+            });
+    }
+
     function hexToRgb(hex) {
         hex = hex.replace(/^#/, '');
         if (hex.length === 3) hex = hex.split('').map(x => x + x).join('');
