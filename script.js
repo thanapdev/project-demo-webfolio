@@ -1,5 +1,39 @@
 // script.js
 // Optionally add more interactive animations here
+function fetchGitHubProfile() {
+    const aboutSection = document.querySelector('#about .container');
+    if (!aboutSection) return;
+
+    fetch('https://api.github.com/repos/thanapdev/thanapdev')
+        .then(res => res.json())
+        .then(repo => {
+            // ดึง README.md
+            return fetch(`https://raw.githubusercontent.com/thanapdev/thanapdev/main/README.md`);
+        })
+        .then(res => res.text())
+        .then(markdown => {
+            // แปลง Markdown เป็น HTML อย่างง่าย และลบเครื่องหมาย #
+            const html = markdown
+                .replace(/^#\s+/gm, '') // ลบ # ที่ขึ้นต้นบรรทัด
+                .replace(/\n## (.*?)\n/g, '<h2>$1</h2>')
+                .replace(/\n### (.*?)\n/g, '<h3>$1</h3>')
+                .replace(/\n\n/g, '<br>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
+                .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
+
+            // แทรกเนื้อหาใน about section
+            const profileContent = document.createElement('div');
+            profileContent.className = 'github-profile-content';
+            profileContent.innerHTML = html;
+            aboutSection.appendChild(profileContent);
+        })
+        .catch(error => {
+            console.error('Error fetching GitHub profile:', error);
+        });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('bg-canvas');
     if (!canvas) return;
@@ -177,8 +211,25 @@ window.addEventListener('DOMContentLoaded', () => {
                     card.className = 'project-card';
                     card.innerHTML = `
                         <h3>${repo.name}</h3>
-                        <p>${repo.description ? repo.description : ''}</p>
-                        <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+                        <p>${repo.description || 'No description available'}</p>
+                        <div class="project-meta">
+                            ${repo.language ? `<span><i class="fas fa-code"></i>${repo.language}</span>` : ''}
+                            <span><i class="fas fa-star"></i>${repo.stargazers_count}</span>
+                            <span><i class="fas fa-code-branch"></i>${repo.forks_count}</span>
+                            <span><i class="fas fa-circle"></i>${repo.private ? 'Private' : 'Public'}</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="${repo.html_url}" target="_blank">
+                                <i class="fab fa-github"></i>
+                                View Source
+                            </a>
+                            ${repo.homepage ? `
+                                <a href="${repo.homepage}" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Live Demo
+                                </a>
+                            ` : ''}
+                        </div>
                     `;
                     projectsGrid.appendChild(card);
                 });
@@ -275,4 +326,6 @@ window.addEventListener('DOMContentLoaded', () => {
             Math.round(lerp(a[2], b[2], t))
         ]);
     }
+
+    fetchGitHubProfile();
 });

@@ -337,7 +337,7 @@ nav ul li a:hover::after {
 }
 /* Section Styles */
 .section {
-    padding: 5rem 0 4rem 0;
+    padding: 6rem 2rem;
     background: transparent;
     min-height: 100vh;
     display: flex;
@@ -369,32 +369,96 @@ nav ul li a:hover::after {
     color: #fff;
     line-height: 1.7;
 }
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+.projects-grid, .skills-grid {
+    background: rgba(14, 33, 72, 0.5);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(8px);
+}
+.project-card, .skill-card {
+    background: rgba(38, 46, 92, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .project-card {
-    background: #1a2250cc;
-    border-radius: 1em;
-    padding: 2rem 1.5rem;
-    color: #fff;
-    box-shadow: 0 4px 24px #0e214820;
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: rgba(38, 46, 92, 0.95);
+    border-radius: 16px;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
 }
 .project-card h3 {
-    color: #E3D095;
-    margin-bottom: 0.7rem;
+    font-size: 1.4rem;
+    color: var(--accent);
+    margin: 0;
 }
-.project-card a {
-    color: #E3D095;
-    text-decoration: underline;
-    font-weight: bold;
+.project-card p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    flex-grow: 1;
+    margin: 0;
 }
-.project-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 8px 32px #483aa080;
+.project-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+.project-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.project-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+}
+.project-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+.project-links a:first-child {
+    background: var(--accent);
+    color: var(--primary-bg);
+}
+.project-links a:last-child {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent);
+}
+.project-links a:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+.project-links img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) saturate(100%);
+}
+/* Light mode adjustments */
+body.light-mode .project-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+body.light-mode .project-card p {
+    color: rgba(0, 0, 0, 0.7);
+}
+body.light-mode .project-meta {
+    color: rgba(0, 0, 0, 0.5);
+}
+body.light-mode .project-links a:last-child {
+    background: rgba(0, 0, 0, 0.05);
 }
 .contact-section .contact-form {
     display: flex;
@@ -541,7 +605,7 @@ body.light-mode.theme-animating {
         transform: translateY(0);
     }
     .section {
-        padding: 3.5rem 0 2.5rem 0;
+        padding: 4rem 1rem;
         min-height: 80vh;
         padding-top: 80px;
     }
@@ -560,68 +624,105 @@ body.light-mode.theme-animating {
         width: 100vw;
     }
 }
-.skills-section h2 {
-    color: #E3D095;
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: 1px;
+/* Tech Stack Section */
+.skills-section {
+    margin-top: 2rem;
     text-align: center;
 }
+
+.skills-section h2 {
+    font-size: 2rem;
+    color: #E3D095;
+    margin-bottom: 1rem; /* เพิ่มระยะห่างระหว่างหัวข้อและไอคอน */
+    letter-spacing: 1px;
+}
+
 .skills-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 1.5rem;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
+    margin-top: 0.5rem; /* เพิ่มระยะห่างเล็กน้อย */
 }
+
+/* Skill Card */
 .skill-card {
-    background: #1a2250cc;
-    border-radius: 1em;
-    padding: 1.5rem 1rem 1rem 1rem;
+    background: rgba(38, 46, 92, 0.95);
+    border-radius: 8px;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 4px 24px #0e214820;
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
     min-width: 100px;
-    min-height: 120px;
+    max-width: 120px;
+    text-align: center;
 }
+
 .skill-card img {
     width: 48px;
     height: 48px;
-    margin-bottom: 0.7rem;
-    filter: drop-shadow(0 2px 8px #0003);
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
     transition: transform 0.3s;
 }
+
 .skill-card span {
+    font-size: 0.9rem;
     color: #fff;
-    font-size: 1.1rem;
-    margin-top: 0.2rem;
-    letter-spacing: 0.5px;
+    font-weight: bold;
 }
+
 .skill-card:hover {
-    transform: translateY(-8px) scale(1.07);
-    box-shadow: 0 8px 32px #483aa080;
-    background: #23284dcc;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
-.skill-card:hover img {
-    transform: scale(1.15) rotate(-8deg);
+
+/* GitHub Stats Section */
+.github-stats {
+    margin-top: 3rem;
+    text-align: center;
 }
-@media (max-width: 900px) {
-    .skills-grid {
-        flex-wrap: wrap;
-        gap: 1.2rem;
-    }
-    .skill-card {
-        min-width: 80px;
-        padding: 1rem 0.5rem 0.5rem 0.5rem;
-    }
+
+.github-stats h2 {
+    font-size: 2rem;
+    color: #E3D095;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
 }
-@media (max-width: 600px) {
-    .skills-grid {
-        flex-direction: column;
-        align-items: center;
-    }
+
+.github-stats .stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.github-stats .stat-card {
+    background: rgba(38, 46, 92, 0.95);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-width: 200px;
+    max-width: 250px;
+    color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.github-stats .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ซ่อนเครื่องหมาย # ใน h1, h2, h3 */
+h1::before, h2::before, h3::before {
+    content: ''; /* ลบเครื่องหมาย # */
+}
+
+h1, h2, h3 {
+    text-indent: 0; /* ปรับระยะห่าง */
 }
