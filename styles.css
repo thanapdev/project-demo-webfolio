@@ -2,6 +2,136 @@
 html {
   scroll-behavior: smooth;
 }
+/* Variables */
+:root {
+    --primary-color: #E3D095;
+    --secondary-color: #0E2148;
+    --text-color: #fff;
+    --bg-color: rgba(14, 33, 72, 0.95);
+    --card-bg: rgba(38, 46, 92, 0.95);
+    --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--bg-color);
+    box-shadow: var(--box-shadow);
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-menu li a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-menu li a:hover {
+    color: var(--primary-color);
+}
+
+/* Section Styles */
+.section {
+    padding: 4rem 2rem; /* ลด padding ด้านบนและด้านล่าง */
+    background: transparent;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px; /* ลด padding ด้านบน */
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s cubic-bezier(.4,2,.6,1), transform 0.8s cubic-bezier(.4,2,.6,1);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Skills Section */
+.skills-section h2 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.skill-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.skill-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.5rem;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Contact Section */
+.contact-section h2 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.contact-form button {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.contact-form button:hover {
+    background: var(--text-color);
+    color: var(--primary-color);
+}
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
@@ -337,12 +467,12 @@ nav ul li a:hover::after {
 }
 /* Section Styles */
 .section {
-    padding: 6rem 2rem;
+    padding: 4rem 2rem; /* ลด padding ด้านบนและด้านล่าง */
     background: transparent;
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding-top: 100px;
+    padding-top: 80px; /* ลด padding ด้านบน */
     opacity: 0;
     transform: translateY(60px);
     transition: opacity 0.8s cubic-bezier(.4,2,.6,1), transform 0.8s cubic-bezier(.4,2,.6,1);
